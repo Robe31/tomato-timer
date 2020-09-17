@@ -50,3 +50,8 @@
     width: 152px;
 }
 
+@media only screen and (max-width: 600px) {
+    #main {
+        overflow: initial;
+    }
+}
