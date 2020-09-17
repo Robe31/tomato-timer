@@ -1,3 +1,18 @@
+import {askForNotification} from './notification.js'
+
+const Sessions = (() => {
+    const log = {
+        currentSession: "null",
+        count: []
+    }
+
+    return {
+        getLog: () => {
+            return log;
+        }
+    }
+})();
+
 const TIME = (() => {
     let timer = {
         currentTime: null,
@@ -52,6 +67,17 @@ const UI = (() => {
         sec: '#2ACA7F',
         tri: '#0EB567'
     }
+
+    const
+    pomodoro = document.querySelector(selectors.pomodoro),
+    shortBreak = document.querySelector(selectors.shortBreak),
+    longBreak = document.querySelector(selectors.longBreak),
+    startBtn = document.querySelector(selectors.startBtn),
+    stopBtn = document.querySelector(selectors.stopBtn),
+    main = document.querySelector(selectors.main),
+    nav = document.querySelector(selectors.nav);
+
+    
     return {
         getSelectors: () => {
             return selectors;
@@ -63,23 +89,71 @@ const UI = (() => {
             document.querySelector(selectors.timer).innerHTML = `
             <p id="time">${time}</p>
             `;
+        },
+        changeColors: (color) => {
+            main.style.background = color;
+            nav.style.background = color;
+            stopBtn.style.color = color;
+            startBtn.style.color = color;
+        },
+        addAndRemoveActive: (add, remove1, remove2) => {
+            add.classList.add('active')
+            remove1.classList.remove('active');
+            remove2.classList.remove('active');
+        },
+        timer: {
+            set: null,
+    
+            start: () => {
+                console.log(log.currentSession)
+                timer.set = setInterval(() => {
+                    const time = TIME.getCurrentTime();
+                    if(time === 0){
+                        clearInterval(timer.set);
+                        timer.displayNotification();
+                    } else {
+                        UI.displayCountdown(TIME.countDown());
+                    }
+                }, 1000)
+                timer.startStopBtnPosition('none', 'inline')
+                askForNotification();
+            },
+    
+            stop: () => {
+                clearInterval(timer.set)
+                timer.startStopBtnPosition('inline', 'none')
+            },
+    
+            displayNotification: () => {
+                if(log.currentSession === 'pomodoro') {
+                    new Notification(`${log.currentSession} is over!`, { body: "Take your break"});
+                } else if(log.currentSession === 'short break') {
+                    new Notification(`${log.currentSession} is over!`, { body: "Get Back To Work!!!!"});
+                } else {
+                    new Notification(`${log.currentSession} is over!`, { body: "That Was Relaxing, Now Get Back To Work!!!!"});
+                }
+            }, 
+            startStopBtnPosition: (start, stop) => {
+                startBtn.style.display = start;
+                stopBtn.style.display = stop;
+            }
         }
     }
 })();
 
-const App = ((UI, TIME) => {
+const App = ((UI, TIME, Sessions) => {
     const 
     selectors = UI.getSelectors(),
-    colors = UI.getColors();
+    colors = UI.getColors(),
+    log = Sessions.getLog();
 
+    //Get App Element
     const
     pomodoro = document.querySelector(selectors.pomodoro),
     shortBreak = document.querySelector(selectors.shortBreak),
     longBreak = document.querySelector(selectors.longBreak),
     startBtn = document.querySelector(selectors.startBtn),
-    stopBtn = document.querySelector(selectors.stopBtn),
-    main = document.querySelector(selectors.main),
-    nav = document.querySelector(selectors.nav);
+    stopBtn = document.querySelector(selectors.stopBtn);
 
 
     let loadEvents = () => {
@@ -93,83 +167,83 @@ const App = ((UI, TIME) => {
         longBreak.addEventListener('click', longBreakTimer);
         
         //start event
-        startBtn.addEventListener('click', timer.start);
+        startBtn.addEventListener('click', UI.timer.start);
 
         //stop event
-        stopBtn.addEventListener('click', timer.stop);
+        stopBtn.addEventListener('click', UI.timer.stop);
     }
 
     let pomodoroTimer = () => {
+        log.currentSession = 'pomodoro';
         TIME.create(1500);
-        const time = TIME.convert()
-        pomodoro.classList.add('active');
-        shortBreak.classList.remove('active');
-        longBreak.classList.remove('active');
-        main.style.background = colors.main;
-        nav.style.background = colors.main;
-        stopBtn.style.color = colors.main;
-        startBtn.style.color = colors.main;
-        UI.displayCountdown(time)
+        UI.addAndRemoveActive(pomodoro, longBreak, shortBreak)
+        UI.changeColors(colors.main)
+        UI.displayCountdown(TIME.convert())
     }
     let shortBreakTimer = () => {
-        TIME.create(300);
-        const time = TIME.convert()
-        shortBreak.classList.add('active');
-        pomodoro.classList.remove('active');
-        longBreak.classList.remove('active');
-        main.style.background = colors.sec;
-        nav.style.background = colors.sec;
-        stopBtn.style.color = colors.sec;
-        startBtn.style.color = colors.sec;
-        UI.displayCountdown(time)
+        log.currentSession = 'short break';
+        TIME.create(10);
+        UI.addAndRemoveActive(shortBreak, longBreak, pomodoro)
+        UI.changeColors(colors.sec)
+        UI.displayCountdown(TIME.convert())
     }
     let longBreakTimer = () => {
+        log.currentSession = 'long break';
         TIME.create(900);
-        const time = TIME.convert()
-        longBreak.classList.add('active')
-        shortBreak.classList.remove('active');
-        pomodoro.classList.remove('active');
-        main.style.background = colors.tri;
-        nav.style.background = colors.tri;
-        stopBtn.style.color = colors.tri;
-        startBtn.style.color = colors.tri;
-        UI.displayCountdown(time)
+        UI.addAndRemoveActive(longBreak, shortBreak, pomodoro)
+        UI.changeColors(colors.tri);
+        UI.displayCountdown(TIME.convert())
     }
-    let timer = {
-        set: null,
-        start: () => {
-            timer.set = setInterval(() => {
-                const time = TIME.getCurrentTime();
-                if(time === 0){
-                    clearInterval(timer.set)
-                } else {
-                        
-                    UI.displayCountdown(TIME.countDown())
-                }
-            }, 1000)
-            startBtn.style.display = 'none';
-            stopBtn.style.display = 'inline';
-        },
-        stop: () => {
-            clearInterval(timer.set)
-            startBtn.style.display = 'inline';
-            stopBtn.style.display = 'none';
-        }
-    }
-    let initialBtnPosition = () => {
-        startBtn.style.display = 'inline';
-        stopBtn.style.display = 'none'
-    }
+    // ----------------------------------------------------------------
+    // let timer = {
+    //     set: null,
+
+    //     start: () => {
+    //         console.log(log.currentSession)
+    //         timer.set = setInterval(() => {
+    //             const time = TIME.getCurrentTime();
+    //             if(time === 0){
+    //                 clearInterval(timer.set);
+    //                 timer.displayNotification();
+    //             } else {
+    //                 UI.displayCountdown(TIME.countDown());
+    //             }
+    //         }, 1000)
+    //         timer.startStopBtnPosition('none', 'inline')
+    //         askForNotification();
+    //     },
+
+    //     stop: () => {
+    //         clearInterval(timer.set)
+    //         timer.startStopBtnPosition('inline', 'none')
+    //     },
+
+    //     displayNotification: () => {
+    //         if(log.currentSession === 'pomodoro') {
+    //             new Notification(`${log.currentSession} is over!`, { body: "Take your break"});
+    //         } else if(log.currentSession === 'short break') {
+    //             new Notification(`${log.currentSession} is over!`, { body: "Get Back To Work!!!!"});
+    //         } else {
+    //             new Notification(`${log.currentSession} is over!`, { body: "That Was Relaxing, Now Get Back To Work!!!!"});
+    //         }
+    //     }, 
+    //     startStopBtnPosition: (start, stop) => {
+    //         startBtn.style.display = start;
+    //         stopBtn.style.display = stop;
+    //     }
+    // }
+
+    
     
     return {
         init: () => {
             // Display Page Load Timer
             pomodoroTimer()
 
-            initialBtnPosition();
+            UI.timer.startStopBtnPosition('inline', 'none');
             loadEvents();
         }
     }
-})(UI, TIME);
+})(UI, TIME, Sessions);
 
 App.init()
