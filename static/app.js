@@ -1,0 +1,1 @@
+let timer = {time: 25}

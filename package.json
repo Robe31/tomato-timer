@@ -1,0 +1,15 @@
+{
+  "name": "eat-your-greens-tomato-timer",
+  "version": "1.0.0",
+  "description": "a tomato timer designed to help you stay focused, while inspiring you to eat your greens!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^3.0.0"
+  }
+}

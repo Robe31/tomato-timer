@@ -1,0 +1,52 @@
+*{
+    font-family: 'Varela Round', sans-serif !important;
+    box-sizing: border-box;
+}
+
+#main {
+    overflow: hidden;
+}
+.main-ui-container {
+    max-width: 480px;
+    min-width: 325px;
+    margin: 50px auto;
+    background: rgba(255,255,255, .1);
+    border-radius: 10px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+#selections {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 70%;
+    margin: 0 auto;
+}
+#selections li {
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#selections li.active {
+    background: rgba(0, 0, 0, 0.23);
+}
+#time {
+    font-size: 99px;
+    font-weight: 700;
+    color: white;
+}
+
+.ui-btn button{
+    font-weight: bold;
+    font-size: 30px;
+    padding: 27px;
+    height: 0px; 
+    line-height: 0px;
+    border-radius: 5px;
+    width: 152px;
+}
+
