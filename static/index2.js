@@ -157,17 +157,18 @@ const App = ((UI, TIME, Sessions) => {
     // ----------------------------------------------------------------
     const timer = {
         set: null,
-        click: () => {
-            let click = new Audio('click.mp3');
+        play: (sound) => {
+            let click = new Audio(sound);
             click.play()
         },
         start: () => {
-            timer.click()
+            timer.play('click.mp3')
             console.log(log.currentSession)
             timer.set = setInterval(() => {
                 const time = TIME.getCurrentTime();
                 if(time === 0){
                     clearInterval(timer.set);
+                    timer.play('alarm.mp3')
                     timer.displayNotification();
                 } else {
                     UI.displayCountdown(TIME.countDown());
@@ -178,7 +179,7 @@ const App = ((UI, TIME, Sessions) => {
         },
 
         stop: () => {
-            timer.click()
+            timer.play('click.mp3')
             clearInterval(timer.set)
             timer.startStopBtnPositionAndStye('inline', 'none', false)
             
