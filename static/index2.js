@@ -142,7 +142,7 @@ const App = ((UI, TIME, Sessions) => {
     }
     function shortBreakTimer() {
         log.currentSession = 'short break';
-        TIME.create(10);
+        TIME.create(300);
         UI.addAndRemoveActive(shortBreak, longBreak, pomodoro);
         UI.changeColors(colors.sec);
         UI.displayCountdown(TIME.convert());
