@@ -6,6 +6,9 @@
 #main {
     overflow: hidden;
 }
+#nav {
+    background: '#00bac4';
+}
 .main-ui-container {
     max-width: 480px;
     min-width: 325px;
@@ -39,7 +42,9 @@
     font-weight: 700;
     color: white;
 }
-
+.ui-btn {
+    height: 64px;
+}
 .ui-btn button{
     font-weight: bold;
     font-size: 30px;
@@ -48,6 +53,13 @@
     line-height: 0px;
     border-radius: 5px;
     width: 152px;
+    box-shadow: none;
+}
+.ui-btn button:hover {
+    box-shadow: none !important;
+}
+#stop {
+    margin-top: 10px;
 }
 
 @media only screen and (max-width: 462px) {
