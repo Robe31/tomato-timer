@@ -5,6 +5,8 @@
 
 #main {
     overflow: hidden;
+    position: relative;
+    height: 500px;
 }
 #nav {
     background: '#00bac4';
@@ -12,13 +14,15 @@
 .main-ui-container {
     max-width: 480px;
     min-width: 325px;
-    margin: 50px auto;
+    margin: 0px auto;
     background: rgba(255,255,255, .1);
     border-radius: 10px;
     height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    position: relative;
+    top: 50;
 }
 #selections {
     display: flex;
@@ -27,6 +31,7 @@
     width: 70%;
     margin: 0 auto;
 }
+
 #selections li {
     color: white;
     padding: 10px;
@@ -35,7 +40,7 @@
     cursor: pointer;
 }
 #selections li.active {
-    background: rgba(0, 0, 0, 0.23);
+    background: rgba(0, 0, 0, 0.1);
 }
 #time {
     font-size: 99px;
@@ -66,4 +71,48 @@
     #main {
         overflow: initial;
     }
+}
+
+#settings {
+    position: absolute;
+    top: 50%;
+    left: -100%;
+    transform: translate(-50%, -80%);
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 325px;
+    height: 50%;
+    display: block;
+    transition: left 3s ease 0s;
+}
+#sheader {
+    display: flex;
+    align-items: center;
+}
+#sTitle {
+    position: absolute;
+    transform: translate(-50%, 89%);
+    left: 50%;
+    font-size: 24px;
+    font-weight: 500;
+} 
+#settingsClose {
+    font-size: 32px;
+    font-weight: 900;
+    position: absolute;
+    left: 95%;
+    transform: translate(-13px, 40%);
+    cursor: pointer;
+}
+#settingsOverlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: -100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 9;
+    display: block;
+    transition: left 3s ease 0s;
 }

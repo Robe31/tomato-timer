@@ -66,8 +66,13 @@ const UI = (() => {
         stopBtn: '#stop',
         timer: '#timer',
         nav: "#nav",
-        main: '#main'
+        main: '#main',
+        settings: '#settings',
+        settingsBtn: '#settingsBtn',
+        settingsClose: '#settingsClose',
+        settingsOverlay: '#settingsOverlay'
     }
+
     let colors = {
         main: '#00bac4',
         sec: '#2ACA7F',
@@ -81,7 +86,12 @@ const UI = (() => {
         startBtn: document.querySelector(selectors.startBtn),
         stopBtn: document.querySelector(selectors.stopBtn),
         main: document.querySelector(selectors.main),
-        nav: document.querySelector(selectors.nav)
+        nav: document.querySelector(selectors.nav),
+        settings: document.querySelector(selectors.settings),
+        settingsBtn: document.querySelector(selectors.settingsBtn),
+        settingsClose: document.querySelector(selectors.settingsClose),
+        settingsOverlay: document.querySelector(selectors.settingsOverlay)
+
     }
     
     return {
@@ -95,17 +105,31 @@ const UI = (() => {
             document.querySelector(selectors.timer).innerHTML = `
             <p id="time">${time}</p>
             `;
+            document.querySelector('title').textContent = `${time} | Eat Your Greens - Tomato Timer`
         },
         changeColors: (color) => {
             getUI.main.style.background = color;
             getUI.nav.style.background = color;
             getUI.stopBtn.style.color = color;
             getUI.startBtn.style.color = color;
+            getUI.settingsClose.style.color = color;
         },
         addAndRemoveActive: (add, remove1, remove2) => {
             add.classList.add('active')
             remove1.classList.remove('active');
             remove2.classList.remove('active');
+        },
+        displaySetting: () => {
+            if(!(getUI.settingsBtn.style.background == 'rgba(0, 0, 0, 0.1)')) {
+                getUI.settingsOverlay.style.left = '0%';
+                getUI.settings.style.left = '50%';
+                getUI.settingsBtn.style.background = 'rgba(0, 0, 0, 0.1)';
+                
+            } else {
+                getUI.settingsOverlay.style.left = '-100%';
+                getUI.settings.style.left = '-100%';
+                getUI.settingsBtn.style.background = 'none';
+            }
         }
     }
 })();
@@ -131,6 +155,15 @@ const App = ((UI, TIME, Sessions) => {
 
         //stop event
         getUI.stopBtn.addEventListener('click', timer.stop);
+
+        //setting button event
+        getUI.settingsBtn.addEventListener('click', (e) => {UI.displaySetting(); e.preventDefault();})
+
+        //setting overlay event
+        getUI.settingsOverlay.addEventListener('click', (e) => {UI.displaySetting(); e.preventDefault();})
+
+        //setting close event
+        getUI.settingsClose.addEventListener('click', (e) => {UI.displaySetting(); e.preventDefault();})
     }
 
     function pomodoroTimer() {
