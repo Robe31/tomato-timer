@@ -11,16 +11,6 @@ app.set('view engine', 'pug' )
 //the "basedir" option is required to use includes and extends with "absolute" paths
 app.locals.basedir = path.join(__dirname, 'views'); 
 
-app.use (function (req, res, next) {
-    if (req.secure) {
-            // request was via https, so do no special handling
-            next();
-    } else {
-            // request was via http, so redirect to https
-            res.redirect('https://pomodoro.jerobejrob.com');
-    }
-});
-
 app.get('/', (req, res) => {
     res.render('index');
 })
