@@ -20,6 +20,6 @@ app.use(function (req, res, next) {
     res.status(404).render('404');
 });
 
-app.listen(port, () => {
-    console.log(`This app is listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+    console.log(`This app is listening at https://localhost:${port}`);
 });
