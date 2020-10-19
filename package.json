@@ -4,7 +4,6 @@
   "description": "a tomato timer designed to help you stay focused, while inspiring you to eat your greens!",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
   "author": "",
